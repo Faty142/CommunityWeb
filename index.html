@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parroquia San Mateo — Gestor Comunitario</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" type="image/png" href="icono.png">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       PÁGINA PÚBLICA
+  ═══════════════════════════════════ -->
+  <div id="page-public" class="page active">
+
+    <!-- Header público -->
+    <header class="public-header">
+      <div class="header-inner">
+        <div class="header-brand">
+          <div class="brand-icon">✝</div>
+          <div class="brand-text">
+            <h1>Parroquia San Mateo</h1>
+            <span>Acaxochitlán, Hidalgo</span>
+          </div>
+        </div>
+        <button class="btn-acceso" onclick="showPage('page-login')">
+          Acceso Personal <span>→</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">Comunidad activa</div>
+        <h2>Avisos de la Comunidad</h2>
+        <p>Mantente informado sobre los eventos, misas y actividades de nuestra parroquia.</p>
+      </div>
+      <div class="hero-decoration">
+        <div class="deco-circle c1"></div>
+        <div class="deco-circle c2"></div>
+        <div class="deco-circle c3"></div>
+      </div>
+    </section>
+
+    <!-- Avisos públicos -->
+    <main class="public-main">
+      <div class="section-header">
+        <h3>Publicaciones recientes</h3>
+        <span id="avisos-count" class="badge-count">Cargando...</span>
+      </div>
+
+    <!-- Filtros -->
+    <div class="filtros-bar" id="filtros-avisos">
+      <button class="filtro-btn active" onclick="cambiarFiltroAviso(this, 'todos')">
+        Todos
+      </button>
+      <button class="filtro-btn" onclick="cambiarFiltroAviso(this, 'semana')">
+        Esta semana
+      </button>
+      <button class="filtro-btn" onclick="cambiarFiltroAviso(this, 'mes')">
+        Este mes
+      </button>
+      <button class="filtro-btn" onclick="cambiarFiltroAviso(this, 'anteriores')">
+        Anteriores
+      </button>
+    </div>
+
+<div id="avisos-grid" class="avisos-grid">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando avisos...</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="public-footer">
+      <p>© 2026 Parroquia San Mateo Acaxochitlán · Todos los derechos reservados</p>
+    </footer>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       PÁGINA LOGIN
+  ═══════════════════════════════════ -->
+  <div id="page-login" class="page">
+    <div class="login-wrapper">
+      <div class="login-left">
+        <div class="login-brand">
+          <div class="brand-icon large">✝</div>
+          <h2>Gestor Comunitario</h2>
+          <p>Herramienta interna para el ministro y catequistas de la Parroquia San Mateo.</p>
+        </div>
+        <div class="login-decoration">
+          <div class="deco-circle c1"></div>
+          <div class="deco-circle c2"></div>
+        </div>
+      </div>
+      <div class="login-right">
+        <button class="btn-back" onclick="showPage('page-public')">← Volver</button>
+        <div class="login-card">
+          <h3>Iniciar sesión</h3>
+          <p class="login-subtitle">Acceso exclusivo para personal autorizado</p>
+
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="login-email" placeholder="correo@ejemplo.com" />
+          </div>
+          <div class="form-group">
+            <label>Contraseña</label>
+            <div class="input-password">
+              <input type="password" id="login-password" placeholder="••••••••" />
+              <button class="btn-eye" onclick="togglePassword()">👁</button>
+            </div>
+          </div>
+
+          <div id="login-error" class="login-error" style="display:none"></div>
+
+          <button class="btn-primary full" onclick="doLogin()" id="btn-login">
+            Iniciar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       ONBOARDING CATEQUISTA (primer login)
+  ═══════════════════════════════════ -->
+  <div id="page-onboarding" class="page">
+    <div class="onboard-wrapper">
+      <div class="onboard-header">
+        <div class="brand-icon">✝</div>
+        <h2>Bienvenida/o</h2>
+        <p>Antes de continuar, completa tu perfil</p>
+      </div>
+
+      <div class="onboard-steps">
+        <div class="step active" id="step-1">
+          <div class="step-number">1</div>
+          <span>Contraseña</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" id="step-2">
+          <div class="step-number">2</div>
+          <span>Correo</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" id="step-3">
+          <div class="step-number">3</div>
+          <span>Términos</span>
+        </div>
+      </div>
+
+      <!-- Pane 1: Cambiar contraseña -->
+      <div class="onboard-pane active" id="onboard-pane-1">
+        <div class="onboard-card">
+          <div class="onboard-icon">🔐</div>
+          <h3>Crea tu contraseña</h3>
+          <p>Por seguridad, debes cambiar tu contraseña temporal antes de continuar.</p>
+          <div class="form-group">
+            <label>Nueva contraseña</label>
+            <input type="password" id="new-password" placeholder="Mínimo 8 caracteres" />
+          </div>
+          <div class="form-group">
+            <label>Confirmar contraseña</label>
+            <input type="password" id="confirm-password" placeholder="Repite tu contraseña" />
+          </div>
+          <button class="btn-primary full" onclick="onboardStep1()">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- Pane 2: Correo -->
+      <div class="onboard-pane" id="onboard-pane-2">
+        <div class="onboard-card">
+          <div class="onboard-icon">📧</div>
+          <h3>Tu correo personal</h3>
+          <p>Ingresa tu correo para que el ministro pueda contactarte.</p>
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="onboard-email" placeholder="tucorreo@ejemplo.com" />
+          </div>
+          <div class="onboard-nav">
+            <button class="btn-secondary" onclick="showOnboardPane(1)">← Atrás</button>
+            <button class="btn-primary" onclick="onboardStep2()">Continuar →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 3: Términos -->
+      <div class="onboard-pane" id="onboard-pane-3">
+        <div class="onboard-card">
+          <div class="onboard-icon">📋</div>
+          <h3>Términos y condiciones</h3>
+          <div class="terms-box">
+            <p>Al usar el Gestor Comunitario de la Parroquia San Mateo, te comprometes a:</p>
+            <ul>
+              <li>Usar la plataforma únicamente para fines comunitarios.</li>
+              <li>Mantener la confidencialidad de los datos de los alumnos.</li>
+              <li>No compartir tus credenciales de acceso.</li>
+              <li>Registrar las asistencias con veracidad y puntualidad.</li>
+              <li>Respetar la privacidad de las familias de la comunidad.</li>
+            </ul>
+          </div>
+          <label class="checkbox-label">
+            <input type="checkbox" id="terms-check" />
+            <span>He leído y acepto los términos y condiciones</span>
+          </label>
+          <div class="onboard-nav">
+            <button class="btn-secondary" onclick="showOnboardPane(2)">← Atrás</button>
+            <button class="btn-primary" onclick="onboardFinish()">Finalizar ✓</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       APLICACIÓN PRINCIPAL
+  ═══════════════════════════════════ -->
+  <div id="page-app" class="page">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <div class="brand-icon small">✝</div>
+          <span>Gestor Comunitario</span>
+        </div>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="avatar" id="sidebar-avatar">--</div>
+        <div class="user-info">
+          <strong id="sidebar-name">--</strong>
+          <span id="sidebar-role">--</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="doLogout()">
+          <span>⬅</span> Cerrar sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="app-content">
+      <div class="topbar">
+        <button class="btn-menu" onclick="toggleSidebar()">☰</button>
+        <h2 class="topbar-title" id="topbar-title">Panel</h2>
+        <div class="topbar-avatar" id="topbar-avatar">--</div>
+      </div>
+
+      <div class="views-container" id="views-container">
+        <!-- Las vistas se insertan aquí dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       MODAL GLOBAL
+  ═══════════════════════════════════ -->
+  <div id="modal-backdrop" class="modal-backdrop" onclick="closeModal()"></div>
+  <div id="modal-container" class="modal-container"></div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
